@@ -1,15 +1,16 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import DisplayHome from "./DisplayHome";
 import DisplayAlbum from "./DisplayAlbum";
 import { albumsData } from "../assets/assets";
 import { useEffect, useRef } from "react";
+import ExploreSection from "./ExploreSection";
 
 const Display = () => {
   const displayRef = useRef();
   const location = useLocation();
   const isAlbum = location?.pathname.includes("album");
-  const albumId = isAlbum ? location.pathname.slice(-1) : "";
-  const bgColor = albumsData[Number(albumId)].bgColor;
+  const bgColor =
+    albumsData?.find((album) => album.id === location.pathname.split("/").pop())
+      ?.bgColor || "#121212";
 
   useEffect(() => {
     if (isAlbum) {
@@ -25,7 +26,7 @@ const Display = () => {
       className="w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg: w-[75%] lg:ml-0"
     >
       <Routes>
-        <Route path="/" element={<DisplayHome />} />
+        <Route path="/" element={<ExploreSection />} />
         <Route path="/album/:id" element={<DisplayAlbum />} />
       </Routes>
     </div>
